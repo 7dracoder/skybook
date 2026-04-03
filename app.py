@@ -5,11 +5,8 @@ from flask import Flask, render_template, request, g
 app = Flask(__name__)
 DB_PATH = os.path.join(os.path.dirname(__file__), "airline.db")
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Database helpers
-# ─────────────────────────────────────────────────────────────────────────────
-
-def get_db():
+# # Database helpers
+# def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(DB_PATH)
         g.db.row_factory = sqlite3.Row
@@ -21,11 +18,8 @@ def close_db(exc):
     if db:
         db.close()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Schema  (SQLite-compatible version of flights.sql)
-# ─────────────────────────────────────────────────────────────────────────────
-
-SCHEMA = """
+# # Schema  (SQLite-compatible version of flights.sql)
+# SCHEMA = """
 CREATE TABLE IF NOT EXISTS Airport (
     airport_code TEXT PRIMARY KEY,
     name         TEXT NOT NULL,
@@ -70,13 +64,10 @@ CREATE TABLE IF NOT EXISTS Booking (
 );
 """
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Seed data, translated from flights.sql (PostgreSQL → SQLite)
+# # Seed data, translated from flights.sql (PostgreSQL → SQLite)
 #   · INTERVAL converted to integer minutes
 #   · TIME stored as 'HH:MM' text
-# ─────────────────────────────────────────────────────────────────────────────
-
-SEED = """
+# SEED = """
 -- Airports (from flights.sql)
 INSERT OR IGNORE INTO Airport VALUES
 ('JFK', 'John F Kennedy International',        'New York',     'United States'),
@@ -219,11 +210,8 @@ def init_db():
         conn.commit()
         conn.close()
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Routes
-# ─────────────────────────────────────────────────────────────────────────────
-
-@app.route("/", methods=["GET"])
+# # Routes
+# @app.route("/", methods=["GET"])
 def index():
     db = get_db()
     airports = db.execute(
@@ -325,7 +313,6 @@ def flight_detail(flight_number, departure_date):
     return render_template("flight_detail.html", flight=flight)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-if __name__ == "__main__":
+# if __name__ == "__main__":
     init_db()
     app.run(debug=True, port=5000)

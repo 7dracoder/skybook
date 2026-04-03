@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <style>
-    /* ── Tokens ── */
+    /* Tokens */
     :root,[data-theme=light]{
       --bg:#f7f6f2;--surf:#f9f8f5;--surf2:#fbfbf9;--off:#eeece7;
       --div:#dcd9d5;--bdr:#d4d1ca;
@@ -46,7 +46,7 @@
       --sh-sm:0 1px 3px #0003;--sh-md:0 4px 14px #0005;--sh-lg:0 12px 32px #0007;
     }}
 
-    /* ── Reset ── */
+    /* Reset */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
     body{min-height:100dvh;font-family:var(--body);font-size:clamp(1rem,.95rem + .25vw,1.125rem);
@@ -60,7 +60,7 @@
     p{text-wrap:pretty}
     table{border-collapse:collapse;width:100%}
 
-    /* ── Header ── */
+    /* Header */
     .hdr{
       background:var(--surf);border-bottom:1px solid var(--div);
       padding:.875rem 1.5rem;display:flex;align-items:center;
@@ -78,20 +78,20 @@
               border:1px solid var(--bdr);transition:background var(--ease),color var(--ease)}
     .btn-icon:hover{background:var(--off);color:var(--txt)}
 
-    /* ── Layout ── */
+    /* Layout */
     .wrap{max-width:960px;margin-inline:auto;padding:2.5rem 1.5rem}
     @media(max-width:600px){.wrap{padding:1.5rem 1rem}}
 
-    /* ── Typography ── */
+    /* Typography */
     .pg-title{font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);font-weight:600;
               color:var(--txt);margin-bottom:.375rem;line-height:1.2}
     .pg-sub{font-size:.9rem;color:var(--muted);margin-bottom:2rem}
 
-    /* ── Card ── */
+    /* Card */
     .card{background:var(--surf);border:1px solid var(--bdr);
           border-radius:var(--r-xl);padding:1.5rem;box-shadow:var(--sh-sm)}
 
-    /* ── Form ── */
+    /* Form */
     .fg{display:flex;flex-direction:column;gap:.375rem}
     .fl{font-size:.875rem;font-weight:500;color:var(--txt)}
     .fi{height:44px;padding:0 .75rem;border:1px solid var(--bdr);border-radius:var(--r-md);
@@ -101,7 +101,7 @@
     .fi::placeholder{color:var(--faint)}
     .fh{font-size:.75rem;color:var(--muted)}
 
-    /* ── Buttons ── */
+    /* Buttons */
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
          height:44px;padding:0 1.25rem;border-radius:var(--r-md);
          font-size:.9rem;font-weight:500;font-family:var(--body);cursor:pointer;
@@ -113,14 +113,14 @@
     .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--bdr)}
     .btn-ghost:hover{background:var(--off);color:var(--txt)}
 
-    /* ── Alert ── */
+    /* Alert */
     .alert{padding:1rem 1.125rem;border-radius:var(--r-lg);font-size:.875rem;
            margin-bottom:1.5rem;display:flex;gap:.75rem;align-items:flex-start}
     .alert-err{background:var(--err-hi);color:var(--err);
                border:1px solid color-mix(in oklch,var(--err) 18%,transparent)}
     .alert ul{padding-left:1.25rem;margin-top:.25rem;display:flex;flex-direction:column;gap:.2rem}
 
-    /* ── Table ── */
+    /* Table */
     .tbl-wrap{overflow-x:auto;border-radius:var(--r-xl);border:1px solid var(--bdr);
               box-shadow:var(--sh-sm)}
     thead{background:var(--off)}
@@ -133,7 +133,7 @@
     tbody tr.row-link{cursor:pointer}
     tbody tr.row-link:hover{background:var(--off)}
 
-    /* ── Badge ── */
+    /* Badge */
     .badge{display:inline-flex;align-items:center;padding:.15rem .5rem;
            border-radius:var(--r-full);font-size:.72rem;font-weight:600;white-space:nowrap}
     .b-gray{background:var(--off);color:var(--muted)}
@@ -141,7 +141,7 @@
     .b-red{background:var(--err-hi);color:var(--err)}
     .b-warn{background:var(--warn-hi);color:var(--warn)}
 
-    /* ── Stat grid ── */
+    /* Stat grid */
     .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
            gap:1rem;margin-bottom:1.5rem}
     .stat{background:var(--off);border-radius:var(--r-lg);padding:1rem 1.25rem}
@@ -151,7 +151,7 @@
               color:var(--txt);font-variant-numeric:tabular-nums}
     .stat-val.c-ok{color:var(--ok)}.stat-val.c-err{color:var(--err)}.stat-val.c-warn{color:var(--warn)}
 
-    /* ── Seat bar ── */
+    /* Seat bar */
     .bar-wrap{margin-top:1rem}
     .bar-track{height:10px;background:var(--div);border-radius:var(--r-full);overflow:hidden}
     .bar-fill{height:100%;border-radius:var(--r-full);transition:width .7s ease}
@@ -161,25 +161,25 @@
     .bar-labels{display:flex;justify-content:space-between;margin-top:.375rem;
                 font-size:.72rem;color:var(--muted)}
 
-    /* ── Detail rows ── */
+    /* Detail rows */
     .det-row{display:flex;justify-content:space-between;align-items:center;
              padding:.7rem 0;border-bottom:1px solid var(--div);font-size:.9rem}
     .det-row:last-child{border-bottom:none}
     .det-k{color:var(--muted)}.det-v{font-weight:500;color:var(--txt)}
 
-    /* ── Route heading ── */
+    /* Route heading */
     .route{display:flex;align-items:center;gap:.75rem;font-family:var(--disp);
            font-style:italic;font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
            color:var(--txt);margin-bottom:1.5rem}
     .route-arr{color:var(--faint);font-style:normal;font-family:var(--body);
                display:flex;align-items:center}
 
-    /* ── Back link ── */
+    /* Back link */
     .back{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;
           color:var(--muted);margin-bottom:1.5rem;transition:color var(--ease)}
     .back:hover{color:var(--pri)}
 
-    /* ── Search summary ── */
+    /* Search summary */
     .srch-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;
               background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-xl);
               padding:.875rem 1.125rem;margin-bottom:1.5rem;box-shadow:var(--sh-sm)}
@@ -187,14 +187,14 @@
     .srch-chip strong{color:var(--txt);font-weight:600}
     .srch-sep{color:var(--div)}
 
-    /* ── Empty state ── */
+    /* Empty state */
     .empty{display:flex;flex-direction:column;align-items:center;text-align:center;
            padding:4rem 2rem;color:var(--muted)}
     .empty svg{margin-bottom:1rem;color:var(--faint)}
     .empty h3{font-size:1.25rem;color:var(--txt);margin-bottom:.5rem}
     .empty p{max-width:36ch;font-size:.9rem;margin-bottom:1.5rem}
 
-    /* ── Form grid ── */
+    /* Form grid */
     .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
     @media(max-width:520px){.fgrid{grid-template-columns:1fr}}
 
