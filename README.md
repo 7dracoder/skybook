@@ -1,8 +1,8 @@
-# SkyBook, CS 6083 PS3 Q1 (Flask + SQLite)
+# ✈️ SkyBook — CS 6083 PS3 Q1 (Flask + SQLite)
 
 A self-contained Flask web app. Uses **SQLite** (built into Python), no external database needed.
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 # 1. Install Flask (the only dependency)
@@ -19,31 +19,32 @@ sample airports, aircraft, flights, passengers, and bookings.
 
 ---
 
-## Demo Data
+## 🗂️ Demo Data
 
-Try these routes with dates **2026-04-05 to 2026-04-10**:
+Try these routes with dates **2025-12-29 to 2025-12-31**:
 
 | Route | Flights |
 |-------|---------|
-| JFK → LAX | AA101 |
-| JFK → ORD | UA201 |
-| JFK → LHR | BA301 |
-| JFK → MIA | DL401 |
-| JFK → CDG | AF501 |
-| JFK → SFO | AA801 |
-| SFO → ORD | UA601 |
-| BOS → LAX | DL701 |
+| JFK → LAX | AA101, AA205 |
+| SFO → ORD | UA302 |
+| ATL → MIA | DL410 |
+| LHR → JFK | BA178 |
+| CDG → NRT | AF023 |
+| SIN → LHR | SQ321 |
+| ORD → MIA | AA550 |
+| JFK → ATL | DL620 |
+| LAX → SFO | UA789 |
 
 ---
 
-## Features
+## 🌟 Features
 
-### Part (a), Search Form `/`
-- Origin & destination airport code inputs
+### 🔍 Part (a) — Search Form `/`
+- Origin & destination airport dropdowns
 - Date range pickers (continuous range)
 - Client + server-side validation
 
-### Part (b), Flight Results `/flights` (POST)
+### 📋 Part (b) — Flight Results `/flights` (POST)
 SQL:
 ```sql
 SELECT f.flight_number, f.departure_date, fs.airline_name,
@@ -56,7 +57,7 @@ WHERE fs.origin_code   = ?
 ORDER BY f.departure_date, fs.departure_time
 ```
 
-### Part (c), Seat Availability `/flight/<number>/<date>`
+### 💺 Part (c) — Seat Availability `/flight/<number>/<date>`
 SQL:
 ```sql
 SELECT a.capacity,
@@ -73,7 +74,7 @@ Shows: available seats, total capacity, booked seats, visual occupancy bar, and 
 
 ---
 
-## Schema
+## 🗃️ Schema
 
 ```
 Airport       (airport_code PK, name, city, country)
