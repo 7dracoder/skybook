@@ -1,21 +1,24 @@
 # SkyBook, CS 6083 PS3 Q1 (Flask + SQLite)
 
-A self-contained Flask web app. Uses SQLite (built into Python), no external database needed.
+A Flask web app backed by PostgreSQL.
 
 ## Quick Start
 
 ```bash
-# 1. Install Flask (the only dependency)
-pip install flask
+# 1. Install dependencies
+pip install -r requirements.txt
 
-# 2. Run
+# 2. Set up your PostgreSQL database and create a .env file
+cp .env.example .env
+# Edit .env and set DATABASE_URL=postgresql://user:password@localhost:5432/skybook
+
+# 3. Run (seeds the database on first start)
 python app.py
 
-# 3. Open http://localhost:5000
+# 4. Open http://localhost:5000
 ```
 
-The SQLite database (`airline.db`) is created automatically on first run, pre-loaded with
-sample airports, aircraft, flights, passengers, and bookings.
+The database schema and seed data are applied automatically on startup via `init_db()`.
 
 ## Demo Data
 
