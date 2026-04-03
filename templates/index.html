@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}SkyBook, Search Flights{% endblock %}
+{% block content %}
+
+<h1 class="pg-title">Search Flights</h1>
+<p class="pg-sub">Enter source &amp; destination airport codes and a date range, then press Search.</p>
+
+{% if errors %}
+<div class="alert alert-err" role="alert">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
+    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+  </svg>
+  <div>
+    <strong>Please fix the following:</strong>
+    <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  </div>
+</div>
+{% endif %}
+
+<div class="card" style="max-width:580px">
+  <form method="POST" action="/flights" novalidate>
+    <div class="fgrid">
+      <div class="fg">
+        <label class="fl" for="origin">Origin Airport</label>
+        <select class="fi" id="origin" name="origin" required>
+          <option value="">Select origin airport...</option>
+          {% for airport in airports %}
+          <option value="{{ airport['airport_code'] }}" 
+                  {% if origin == airport['airport_code'] %}selected{% endif %}>
+            {{ airport['airport_code'] }} - {{ airport['city'] }}, {{ airport['country'] }}
+          </option>
+          {% endfor %}
+        </select>
+        <span class="fh">Select departure airport</span>
+      </div>
+      <div class="fg">
+        <label class="fl" for="dest">Destination Airport</label>
+        <select class="fi" id="dest" name="destination" required>
+          <option value="">Select destination airport...</option>
+          {% for airport in airports %}
+          <option value="{{ airport['airport_code'] }}" 
+                  {% if destination == airport['airport_code'] %}selected{% endif %}>
+            {{ airport['airport_code'] }} - {{ airport['city'] }}, {{ airport['country'] }}
+          </option>
+          {% endfor %}
+        </select>
+        <span class="fh">Select arrival airport</span>
+      </div>
+      <div class="fg">
+        <label class="fl" for="s">From Date</label>
+        <input class="fi" type="date" id="s" name="start_date"
+               value="{{ start_date or '' }}" required>
+      </div>
+      <div class="fg">
+        <label class="fl" for="e">To Date</label>
+        <input class="fi" type="date" id="e" name="end_date"
+               value="{{ end_date or '' }}" required>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem">
+      <button class="btn btn-pri" type="submit">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        Search Flights
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Demo routes hint -->
+<div style="margin-top:1.75rem;padding:1rem 1.25rem;background:var(--off);
+            border-radius:var(--r-lg);max-width:580px;font-size:.8rem;color:var(--muted)">
+  <p style="font-weight:600;color:var(--txt);margin-bottom:.5rem">
+    📋 Demo Data (from flights.sql), use dates 2025-12-29 to 2025-12-31
+  </p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.3rem .75rem">
+    <span>JFK → LAX (AA101, AA205)</span>
+    <span>SFO → ORD (UA302)</span>
+    <span>ATL → MIA (DL410)</span>
+    <span>LHR → JFK (BA178)</span>
+    <span>CDG → NRT (AF023)</span>
+    <span>SIN → LHR (SQ321)</span>
+    <span>ORD → MIA (AA550)</span>
+    <span>JFK → ATL (DL620)</span>
+    <span>LAX → SFO (UA789)</span>
+  </div>
+</div>
+{% endblock %}

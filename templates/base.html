@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}SkyBook{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ── Tokens ── */
+    :root,[data-theme=light]{
+      --bg:#f7f6f2;--surf:#f9f8f5;--surf2:#fbfbf9;--off:#eeece7;
+      --div:#dcd9d5;--bdr:#d4d1ca;
+      --txt:#28251d;--muted:#7a7974;--faint:#bab9b4;--inv:#f9f8f4;
+      --pri:#01696f;--pri-h:#0c4e54;--pri-a:#0f3638;--pri-hi:#cedcd8;
+      --err:#9b1c5a;--err-hi:#fceef5;
+      --ok:#437a22;--ok-hi:#edf5e8;
+      --warn:#964219;--warn-hi:#fdf3ec;
+      --sh-sm:0 1px 3px oklch(.2 .01 80/.07);
+      --sh-md:0 4px 14px oklch(.2 .01 80/.09);
+      --sh-lg:0 12px 32px oklch(.2 .01 80/.13);
+      --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-full:9999px;
+      --ease:180ms cubic-bezier(.16,1,.3,1);
+      --body:'Inter','Helvetica Neue',sans-serif;
+      --disp:'Instrument Serif',Georgia,serif;
+    }
+    [data-theme=dark]{
+      --bg:#171614;--surf:#1c1b19;--surf2:#201f1d;--off:#252420;
+      --div:#2a2927;--bdr:#363432;
+      --txt:#cdccca;--muted:#797876;--faint:#4e4d4b;--inv:#2b2a28;
+      --pri:#4f98a3;--pri-h:#227f8b;--pri-a:#1a626b;--pri-hi:#1e3536;
+      --err:#d163a7;--err-hi:#2a1825;
+      --ok:#6daa45;--ok-hi:#1a2a14;
+      --warn:#bb653b;--warn-hi:#2b1a0f;
+      --sh-sm:0 1px 3px #0003;--sh-md:0 4px 14px #0005;--sh-lg:0 12px 32px #0007;
+    }
+    @media(prefers-color-scheme:dark){:root:not([data-theme]){
+      --bg:#171614;--surf:#1c1b19;--surf2:#201f1d;--off:#252420;
+      --div:#2a2927;--bdr:#363432;
+      --txt:#cdccca;--muted:#797876;--faint:#4e4d4b;--inv:#2b2a28;
+      --pri:#4f98a3;--pri-h:#227f8b;--pri-a:#1a626b;--pri-hi:#1e3536;
+      --err:#d163a7;--err-hi:#2a1825;
+      --ok:#6daa45;--ok-hi:#1a2a14;
+      --warn:#bb653b;--warn-hi:#2b1a0f;
+      --sh-sm:0 1px 3px #0003;--sh-md:0 4px 14px #0005;--sh-lg:0 12px 32px #0007;
+    }}
+
+    /* ── Reset ── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+    body{min-height:100dvh;font-family:var(--body);font-size:clamp(1rem,.95rem + .25vw,1.125rem);
+         color:var(--txt);background:var(--bg);line-height:1.65;
+         transition:background var(--ease),color var(--ease)}
+    img,svg{display:block;max-width:100%}
+    button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+    a{color:var(--pri);text-decoration:none;transition:color var(--ease)}
+    a:hover{color:var(--pri-h)}
+    :focus-visible{outline:2px solid var(--pri);outline-offset:3px;border-radius:var(--r-sm)}
+    p{text-wrap:pretty}
+    table{border-collapse:collapse;width:100%}
+
+    /* ── Header ── */
+    .hdr{
+      background:var(--surf);border-bottom:1px solid var(--div);
+      padding:.875rem 1.5rem;display:flex;align-items:center;
+      justify-content:space-between;position:sticky;top:0;z-index:99;
+      backdrop-filter:blur(10px);
+    }
+    .hdr-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--txt)}
+    .logo-sq{width:32px;height:32px;background:var(--pri);border-radius:var(--r-md);
+             display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .logo-sq svg{color:#fff}
+    .logo-text{font-family:var(--disp);font-size:1.25rem;font-style:italic}
+    .logo-text b{color:var(--pri);font-weight:400}
+    .btn-icon{width:36px;height:36px;border-radius:var(--r-full);display:flex;
+              align-items:center;justify-content:center;color:var(--muted);
+              border:1px solid var(--bdr);transition:background var(--ease),color var(--ease)}
+    .btn-icon:hover{background:var(--off);color:var(--txt)}
+
+    /* ── Layout ── */
+    .wrap{max-width:960px;margin-inline:auto;padding:2.5rem 1.5rem}
+    @media(max-width:600px){.wrap{padding:1.5rem 1rem}}
+
+    /* ── Typography ── */
+    .pg-title{font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);font-weight:600;
+              color:var(--txt);margin-bottom:.375rem;line-height:1.2}
+    .pg-sub{font-size:.9rem;color:var(--muted);margin-bottom:2rem}
+
+    /* ── Card ── */
+    .card{background:var(--surf);border:1px solid var(--bdr);
+          border-radius:var(--r-xl);padding:1.5rem;box-shadow:var(--sh-sm)}
+
+    /* ── Form ── */
+    .fg{display:flex;flex-direction:column;gap:.375rem}
+    .fl{font-size:.875rem;font-weight:500;color:var(--txt)}
+    .fi{height:44px;padding:0 .75rem;border:1px solid var(--bdr);border-radius:var(--r-md);
+        background:var(--surf2);color:var(--txt);font-size:1rem;font-family:var(--body);
+        transition:border-color var(--ease),box-shadow var(--ease);width:100%}
+    .fi:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-hi)}
+    .fi::placeholder{color:var(--faint)}
+    .fh{font-size:.75rem;color:var(--muted)}
+
+    /* ── Buttons ── */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+         height:44px;padding:0 1.25rem;border-radius:var(--r-md);
+         font-size:.9rem;font-weight:500;font-family:var(--body);cursor:pointer;
+         transition:background var(--ease),color var(--ease),box-shadow var(--ease);
+         white-space:nowrap;text-decoration:none}
+    .btn-pri{background:var(--pri);color:var(--inv);border:none}
+    .btn-pri:hover{background:var(--pri-h);color:var(--inv)}
+    .btn-pri:active{background:var(--pri-a)}
+    .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--bdr)}
+    .btn-ghost:hover{background:var(--off);color:var(--txt)}
+
+    /* ── Alert ── */
+    .alert{padding:1rem 1.125rem;border-radius:var(--r-lg);font-size:.875rem;
+           margin-bottom:1.5rem;display:flex;gap:.75rem;align-items:flex-start}
+    .alert-err{background:var(--err-hi);color:var(--err);
+               border:1px solid color-mix(in oklch,var(--err) 18%,transparent)}
+    .alert ul{padding-left:1.25rem;margin-top:.25rem;display:flex;flex-direction:column;gap:.2rem}
+
+    /* ── Table ── */
+    .tbl-wrap{overflow-x:auto;border-radius:var(--r-xl);border:1px solid var(--bdr);
+              box-shadow:var(--sh-sm)}
+    thead{background:var(--off)}
+    th{text-align:left;padding:.6rem 1rem;font-weight:600;color:var(--muted);
+       font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;
+       border-bottom:1px solid var(--div);white-space:nowrap}
+    td{padding:.7rem 1rem;border-bottom:1px solid var(--div);color:var(--txt);vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr{background:var(--surf);transition:background var(--ease)}
+    tbody tr.row-link{cursor:pointer}
+    tbody tr.row-link:hover{background:var(--off)}
+
+    /* ── Badge ── */
+    .badge{display:inline-flex;align-items:center;padding:.15rem .5rem;
+           border-radius:var(--r-full);font-size:.72rem;font-weight:600;white-space:nowrap}
+    .b-gray{background:var(--off);color:var(--muted)}
+    .b-green{background:var(--ok-hi);color:var(--ok)}
+    .b-red{background:var(--err-hi);color:var(--err)}
+    .b-warn{background:var(--warn-hi);color:var(--warn)}
+
+    /* ── Stat grid ── */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+           gap:1rem;margin-bottom:1.5rem}
+    .stat{background:var(--off);border-radius:var(--r-lg);padding:1rem 1.25rem}
+    .stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;
+              letter-spacing:.05em;margin-bottom:.25rem}
+    .stat-val{font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);font-weight:700;
+              color:var(--txt);font-variant-numeric:tabular-nums}
+    .stat-val.c-ok{color:var(--ok)}.stat-val.c-err{color:var(--err)}.stat-val.c-warn{color:var(--warn)}
+
+    /* ── Seat bar ── */
+    .bar-wrap{margin-top:1rem}
+    .bar-track{height:10px;background:var(--div);border-radius:var(--r-full);overflow:hidden}
+    .bar-fill{height:100%;border-radius:var(--r-full);transition:width .7s ease}
+    .bar-fill.c-ok{background:var(--ok)}
+    .bar-fill.c-warn{background:var(--warn)}
+    .bar-fill.c-err{background:var(--err)}
+    .bar-labels{display:flex;justify-content:space-between;margin-top:.375rem;
+                font-size:.72rem;color:var(--muted)}
+
+    /* ── Detail rows ── */
+    .det-row{display:flex;justify-content:space-between;align-items:center;
+             padding:.7rem 0;border-bottom:1px solid var(--div);font-size:.9rem}
+    .det-row:last-child{border-bottom:none}
+    .det-k{color:var(--muted)}.det-v{font-weight:500;color:var(--txt)}
+
+    /* ── Route heading ── */
+    .route{display:flex;align-items:center;gap:.75rem;font-family:var(--disp);
+           font-style:italic;font-size:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+           color:var(--txt);margin-bottom:1.5rem}
+    .route-arr{color:var(--faint);font-style:normal;font-family:var(--body);
+               display:flex;align-items:center}
+
+    /* ── Back link ── */
+    .back{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;
+          color:var(--muted);margin-bottom:1.5rem;transition:color var(--ease)}
+    .back:hover{color:var(--pri)}
+
+    /* ── Search summary ── */
+    .srch-bar{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;
+              background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-xl);
+              padding:.875rem 1.125rem;margin-bottom:1.5rem;box-shadow:var(--sh-sm)}
+    .srch-chip{display:inline-flex;align-items:center;gap:.3rem;font-size:.875rem;color:var(--muted)}
+    .srch-chip strong{color:var(--txt);font-weight:600}
+    .srch-sep{color:var(--div)}
+
+    /* ── Empty state ── */
+    .empty{display:flex;flex-direction:column;align-items:center;text-align:center;
+           padding:4rem 2rem;color:var(--muted)}
+    .empty svg{margin-bottom:1rem;color:var(--faint)}
+    .empty h3{font-size:1.25rem;color:var(--txt);margin-bottom:.5rem}
+    .empty p{max-width:36ch;font-size:.9rem;margin-bottom:1.5rem}
+
+    /* ── Form grid ── */
+    .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+    @media(max-width:520px){.fgrid{grid-template-columns:1fr}}
+
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+             overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
+  </style>
+</head>
+<body>
+<a href="#main" class="sr-only">Skip to content</a>
+<header class="hdr">
+  <a href="/" class="hdr-logo" aria-label="SkyBook home">
+    <div class="logo-sq" aria-hidden="true">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 2c-2-2-4-2-5.5-.5L10 5 1.8 6.2c-.5.1-.7.6-.4 1l3.4 3.4-1.8 6.8c-.1.5.3.9.8.8l6.8-1.8 3.4 3.4c.4.3.9.1 1-.4z"/>
+      </svg>
+    </div>
+    <span class="logo-text">Sky<b>Book</b></span>
+  </a>
+  <button class="btn-icon" data-toggle aria-label="Toggle dark mode">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</header>
+
+<main class="wrap" id="main">
+  {% block content %}{% endblock %}
+</main>
+
+<script>
+(function(){
+  var root=document.documentElement,btn=document.querySelector('[data-toggle]');
+  var sys=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  var t=sys; root.setAttribute('data-theme',t); upd();
+  btn&&btn.addEventListener('click',function(){
+    t=t==='dark'?'light':'dark';
+    root.setAttribute('data-theme',t); upd();
+  });
+  function upd(){
+    if(!btn)return;
+    btn.setAttribute('aria-label','Switch to '+(t==='dark'?'light':'dark')+' mode');
+    btn.innerHTML=t==='dark'
+      ?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+})();
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

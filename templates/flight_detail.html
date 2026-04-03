@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}SkyBook, {{ flight['flight_number'] }} {{ flight['departure_date'] }}{% endblock %}
+{% block content %}
+
+<a class="back" href="javascript:history.back()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M19 12H5M12 19l-7-7 7-7"/>
+  </svg>
+  Back to results
+</a>
+
+<div class="route">
+  {{ flight['origin_code'] }}
+  <span class="route-arr">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </svg>
+  </span>
+  {{ flight['dest_code'] }}
+</div>
+
+{% set cap  = flight['capacity'] %}
+{% set avail= flight['available_seats'] %}
+{% set booked = cap - avail %}
+{% set pct = ((booked / cap) * 100)|round|int if cap > 0 else 0 %}
+{% set bar_cls = 'c-err' if pct >= 90 else ('c-warn' if pct >= 65 else 'c-ok') %}
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-lbl">Available Seats</div>
+    <div class="stat-val {{ 'c-ok' if avail > 0 else 'c-err' }}">{{ avail }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-lbl">Total Capacity</div>
+    <div class="stat-val">{{ cap }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-lbl">Seats Booked</div>
+    <div class="stat-val">{{ booked }}</div>
+  </div>
+</div>
+
+<!-- Occupancy bar -->
+<div class="card" style="margin-bottom:1.5rem">
+  <p style="font-size:.85rem;font-weight:600;margin-bottom:.75rem">Seat Occupancy</p>
+  <div class="bar-wrap">
+    <div class="bar-track">
+      <div class="bar-fill {{ bar_cls }}" style="width:{{ pct }}%"></div>
+    </div>
+    <div class="bar-labels">
+      <span>0 booked</span>
+      <span><strong>{{ pct }}%</strong> full</span>
+      <span>{{ cap }} total</span>
+    </div>
+  </div>
+  <p style="margin-top:.75rem;font-size:.85rem">
+    {% if avail == 0 %}
+      <span class="badge b-red">Fully Booked</span>
+    {% elif avail <= 5 %}
+      <span class="badge b-warn">Only {{ avail }} seat{{ 's' if avail != 1 else '' }} left</span>
+    {% else %}
+      <span class="badge b-green">{{ avail }} seats available</span>
+    {% endif %}
+  </p>
+</div>
+
+<!-- Details -->
+<div class="card">
+  <p style="font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;
+            letter-spacing:.05em;margin-bottom:1rem">Flight Details</p>
+
+  <div class="det-row"><span class="det-k">Flight Number</span>
+    <span class="det-v">{{ flight['flight_number'] }}</span></div>
+  <div class="det-row"><span class="det-k">Airline</span>
+    <span class="det-v">{{ flight['airline_name'] }}</span></div>
+  <div class="det-row"><span class="det-k">Departure Date</span>
+    <span class="det-v" style="font-variant-numeric:tabular-nums">{{ flight['departure_date'] }}</span></div>
+  <div class="det-row"><span class="det-k">Departure Time (GMT)</span>
+    <span class="det-v" style="font-variant-numeric:tabular-nums">{{ flight['departure_time'] }} UTC</span></div>
+  <div class="det-row"><span class="det-k">Duration</span>
+    <span class="det-v">{{ flight['duration'] }} minutes</span></div>
+  <div class="det-row"><span class="det-k">Aircraft</span>
+    <span class="det-v">{{ flight['plane_type'] }}</span></div>
+  <div class="det-row"><span class="det-k">Origin</span>
+    <span class="det-v"><span class="badge b-gray">{{ flight['origin_code'] }}</span></span></div>
+  <div class="det-row"><span class="det-k">Destination</span>
+    <span class="det-v"><span class="badge b-gray">{{ flight['dest_code'] }}</span></span></div>
+</div>
+{% endblock %}
