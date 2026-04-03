@@ -5,8 +5,6 @@ from flask import Flask, render_template, request, g
 app = Flask(__name__)
 DB_PATH = os.path.join(os.path.dirname(__file__), "airline.db")
 
-# Database helpers
-
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(DB_PATH)
@@ -18,8 +16,6 @@ def close_db(exc):
     db = g.pop("db", None)
     if db:
         db.close()
-
-# Schema (SQLite-compatible version of flights.sql)
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS Airport (
@@ -66,17 +62,13 @@ CREATE TABLE IF NOT EXISTS Booking (
 );
 """
 
-# Seed data
-
 SEED = """
 INSERT OR IGNORE INTO Airport VALUES
 ('JFK', 'John F Kennedy International',        'New York',     'United States'),
 ('LAX', 'Los Angeles International',           'Los Angeles',  'United States'),
 ('ORD', 'O''Hare International',               'Chicago',      'United States'),
-('MDW', 'Midway International',                'Chicago',      'United States'),
 ('LHR', 'Heathrow Airport',                    'London',       'United Kingdom'),
 ('CDG', 'Charles de Gaulle Airport',           'Paris',        'France'),
-('ORY', 'Paris Orly Airport',                  'Paris',        'France'),
 ('SFO', 'San Francisco International',         'San Francisco','United States'),
 ('MIA', 'Miami International',                 'Miami',        'United States'),
 ('ATL', 'Hartsfield-Jackson International',    'Atlanta',      'United States'),
@@ -189,8 +181,6 @@ def init_db():
         conn.executescript(SEED)
         conn.commit()
         conn.close()
-
-# Routes
 
 @app.route("/", methods=["GET"])
 def index():
